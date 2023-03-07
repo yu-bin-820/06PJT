@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PurchaseMapper">
+ 	
+ 	
+	<resultMap id="purchaseSelectMap" type="purchase">
+		<result property="tranNo" 				column="TRAN_NO" 			jdbcType="INTEGER"/>
+		<result property="purchaseProd.prodNo"	column="PROD_NO" 			jdbcType="INTEGER" />
+		<result property="buyer.userId" 		column="BUYER_ID" 			jdbcType="VARCHAR" />
+		<result property="paymentOption" 		column="PAYMENT_OPTION" 	jdbcType="VARCHAR" />
+		<result property="receiverName" 		column="RECEIVER_NAME" 		jdbcType="VARCHAR" />
+		<result property="receiverPhone" 		column="RECEIVER_PHONE" 	jdbcType="VARCHAR" />
+		<result property="divyAddr" 			column="DEMAILADDR" 		jdbcType="VARCHAR" />
+		<result property="divyRequest" 			column="DLVY_REQUEST" 		jdbcType="VARCHAR" />
+		<result property="tranCode" 			column="TRAN_STATUS_CODE" 	jdbcType="VARCHAR" />
+		<result property="divyDate" 			column="DLVY_DATE" 			jdbcType="VARCHAR" />
+		<result property="orderDate" 			column="ORDER_DATA" 		jdbcType="DATE" />
+	</resultMap>
+	
+	<!-- SQL : INSERT -->
+	<insert 	id="insertPurchase"		parameterType="purchase" >
+	 	insert into transaction
+	 	values (SEQ_TRANSACTION_TRAN_NO.NEXTVAL, #{purchaseProd.prodNo:INTEGER}, #{buyer.userId:VARCHAR}, #{paymentOption:VARCHAR}, #{receiverName:VARCHAR}, #{receiverPhone:VARCHAR}, #{divyAddr:VARCHAR}, #{divyRequest:VARCHAR}, #{tranCode:VARCHAR}, sysdate,  #{divyDate:VARCHAR})
+	 </insert>
+	 
+	 <!-- SQL : SELECT ONE -->
+	 <select 	id="findPurchase"	parameterType="int"	resultMap="purchaseSelectMap">
+		SELECT
+		TRAN_NO, PROD_NO , BUYER_ID , PAYMENT_OPTION , RECEIVER_NAME ,  RECEIVER_PHONE ,  DEMAILADDR , DLVY_REQUEST,	DLVY_DATE, ORDER_DATA, 	ORDER_DATA, TRAN_STATUS_CODE
+		FROM transaction
+		WHERE TRAN_NO = #{value}
+	 </select>
+	 
+	 <!-- SQL : UPDATE -->
+	 <update	id="updatePurchase"	parameterType="purchase" >
+	   	UPDATE transaction
+	   	<set>
+	   		PAYMENT_OPTION 	= #{paymentOption:VARCHAR} ,
+	   		RECEIVER_NAME 	= #{receiverName:VARCHAR} ,
+			RECEIVER_PHONE	= #{receiverPhone:VARCHAR},
+			DEMAILADDR = #{divyAddr:VARCHAR} ,
+			DLVY_REQUEST=	#{divyRequest:INTEGER},
+			DLVY_DATE	=	#{divyDate:VARCHAR}
+	   	</set>
+	   	WHERE TRAN_NO = #{tranNo}
+	 </update>
+		 
+	<!-- SQL : SELECT LIST -->
+	<select  id="getPurchaseList"  parameterType="Map"	resultMap="purchaseSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT *
+											FROM transaction
+												<where>
+										 				buyer_ID = #{userId}
+												</where>
+											ORDER BY ORDER_DATA ) inner_table
+						WHERE ROWNUM &lt;= #{search.endRowNum} )
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum} 
+	 </select>
+	 	<!--  위 두번째 subQuery 의  
+	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는
+	 			WHERE ROWNUM <= #{endRowNum} ) 의미이며..
+	 			< 는 keyword 로 &lt; 를	사용.
+	 			
+	 			<![CDATA[  ~~~  ]]> 를 이용하여 아래와 같이 사용  할 수 있다.
+	 			CDATA ==> Character Data 의 의미 Java 에서 \n 같은 특수문자 처리  
+
+				WHERE ROWNUM <![CDATA[ <=]]> #{endRowNum} )
+		-->
+	
+	<!-- SQL : SELECT ROW Count -->	 
+	 <select  id="getTotalCount"  parameterType="String"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT *
+						FROM transaction
+						
+							<where>
+								buyer_ID = #{userId}
+							</where>
+						 ) countTable						
+	 </select>
+	 
+	 	<!-- SQL : UPDATE -->
+	 <update	id="updateTranCode"	parameterType="purchase" >
+	   	UPDATE transaction
+	   	<set>
+	   		TRAN_STATUS_CODE 	= #{tranCode:VARCHAR}
+	   	</set>
+	   	WHERE PROD_NO = #{purchaseProd.prodNo}
+	 </update>
+	 
+	 
+</mapper>
