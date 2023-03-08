@@ -75,7 +75,14 @@ Product vo = (Product)request.getAttribute("vo");
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<img src = "/images/uploadFiles/../../images/empty.GIF"/>
+			<!-- 테이블 시작 -->
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="26">
+						<img src="/images/uploadFiles/${product.fileName}"/>
+					</td>
+				</tr>
+			</table>
 		</td>
 	</tr>
 	<tr>
@@ -154,12 +161,5 @@ Product vo = (Product)request.getAttribute("vo");
 </form>
 
 </body>
-</html><html>
-<head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
 </html>
+

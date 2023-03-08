@@ -206,7 +206,7 @@ function fncGetProductList(currentPage){
 				<td></td>
 				<td align="left">
 					<c:choose>
-						<c:when test= "${product.proTranCode=='0'}">
+						<c:when test= "${product.proTranCode=='0'||product.proTranCode==null}">
 							∆«∏≈¡ﬂ
 						</c:when>
 						<c:when test= "${product.proTranCode=='1'}">

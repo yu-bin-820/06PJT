@@ -100,7 +100,7 @@ Product vo = (Product)request.getAttribute("vo");
 			<table border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td height="26">
-						<img src="/images/uploadFiles/../../images/empty.GIF"/>
+						<img src="/images/uploadFiles/${product.fileName}"/>
 					</td>
 				</tr>
 			</table>

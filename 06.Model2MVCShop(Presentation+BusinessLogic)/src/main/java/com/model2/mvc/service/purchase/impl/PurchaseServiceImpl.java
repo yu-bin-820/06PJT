@@ -34,6 +34,12 @@ public class PurchaseServiceImpl implements PurchaseService{
 	public PurchaseServiceImpl() {
 
 	}
+	
+	public Map<String, Object> addPurchaseView() throws Exception{
+		
+		
+		return null;
+	}
 
 	public Purchase getPurchase(int tranNo) throws Exception {
 		//System.out.println(purchaseDAO.findPurchase(prodNo).getPurchaseProd());

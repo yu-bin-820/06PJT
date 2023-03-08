@@ -32,6 +32,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void insertProduct(Product product) throws Exception {
+		
+		
 		productDao.insertProduct(product);
 	}
 
