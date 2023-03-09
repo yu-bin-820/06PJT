@@ -17,6 +17,8 @@ public interface PurchaseDao {
 	
 	public void updatePurchase(Purchase purchase) throws Exception;
 	
+	public void updateTranCodeByProd(Purchase purchase) throws Exception;
+	
 	public void updateTranCode(Purchase purchase) throws Exception;
 	
 	public int getTotalCount(String userId) throws Exception;

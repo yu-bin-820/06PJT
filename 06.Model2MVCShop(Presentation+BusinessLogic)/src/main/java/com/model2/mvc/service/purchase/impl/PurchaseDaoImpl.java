@@ -72,14 +72,20 @@ public class PurchaseDaoImpl implements PurchaseDao{
 		sqlSession.update("PurchaseMapper.updatePurchase", purchase);
 	}
 
-	public void updateTranCode(Purchase purchase) throws Exception {
+	public void updateTranCodeByProd(Purchase purchase) throws Exception {
 		
-		sqlSession.update("PurchaseMapper.updateTranCode", purchase);
+		sqlSession.update("PurchaseMapper.updateTranCodeByProd", purchase);
 	}
 	// 게시판 Page 처리를 위한 전체 Row(totalCount)  return
 	public int getTotalCount(String userId) throws Exception {
 		
 		return sqlSession.selectOne("PurchaseMapper.getTotalCount", userId);
+	}
+
+	@Override
+	public void updateTranCode(Purchase purchase) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update("PurchaseMapper.updateTranCode", purchase);
 	}
 
 	

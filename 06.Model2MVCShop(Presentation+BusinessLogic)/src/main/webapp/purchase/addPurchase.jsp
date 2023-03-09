@@ -28,7 +28,7 @@
 <table border=1>
 	<tr>
 		<td>물품번호</td>
-		<td>${ product.prodNo}</td>
+		<td>${purchase.purchaseProd.prodNo}</td>
 		<td></td>
 	</tr>
 	<tr>

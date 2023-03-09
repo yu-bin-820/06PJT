@@ -80,7 +80,7 @@ function fncGetPurchaseList(currentPage){
 		<c:set var="i" value="${i+1}"/>
 		<tr class="ct_list_pop">
 			<td align="center">
-				<a href="/getPurchase.do?tranNo=${purchase.tranNo}">${i+1}</a>
+				<a href="/getPurchase.do?tranNo=${purchase.tranNo}">${i}</a>
 			</td>
 			<td></td>
 			<td align="left">
@@ -104,7 +104,7 @@ function fncGetPurchaseList(currentPage){
 							<a href="/updateTranCode.do?tranNo=${purchase.tranNo}&tranCode=3">물건도착</a>
 					</c:when>
 					<c:when test="${purchase.tranCode == '3' }">
-						구매완료 상태입니다.
+						배송완료 상태입니다.
 					</c:when>
 				</c:choose>  	
 			</td>

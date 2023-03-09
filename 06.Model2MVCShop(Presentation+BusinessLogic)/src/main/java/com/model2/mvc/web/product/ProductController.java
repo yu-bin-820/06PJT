@@ -1,10 +1,15 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -28,6 +34,12 @@ public class ProductController {
 	private ProductService productService;
 	//setter Method 구현 않음
 	
+	
+	////////////////////////////////////////////////////////
+	private static final Logger logger = 
+			LoggerFactory.getLogger(ProductController.class);
+	
+	
 	public ProductController() {
 		System.out.println(this.getClass());
 	}
@@ -39,19 +51,50 @@ public class ProductController {
 	int pageSize;
 	
 	@RequestMapping("/addProduct.do")
-	public String addProduct( @ModelAttribute("product") Product product, Model model ) throws Exception {
+	public String addProduct( @ModelAttribute("product") Product product, @RequestParam("file") MultipartFile[] file, Model model ) throws Exception {
 		
 		System.out.println("/addProduct.do");
+		
+		////////////////////////////////////////////////////////////////
+		String uploadFolder = "C:\\Users\\majja\\git\\06PJT\\06.Model2MVCShop(Presentation+BusinessLogic)\\src\\main\\webapp\\images\\uploadFiles";
+		
+		List<String> list = new ArrayList<String>();
+		for(MultipartFile multipartFile : file) {
+			logger.info("-----------");
+			logger.info("파일명 : " + multipartFile.getOriginalFilename());
+			logger.info("파일크기 : " + multipartFile.getSize());
+			
+			// uploadFolder\\gongu03.jpg으로 조립
+			// 이렇게 업로드 하겠다라고 설계
+			File saveFile = new File(uploadFolder, multipartFile.getOriginalFilename());
+			
+			try {
+				//파일 실제 명을 list에 담음
+				list.add(multipartFile.getOriginalFilename());
+				//transferTo() : 물리적으로 파일 업로드가 됨
+				multipartFile.transferTo(saveFile);
+			}catch(Exception e) {
+				logger.info(e.getMessage());
+			}//end catch
+		}//end for
+		
+		//list : 파일명들이 들어있음
 		product.setManuDate(product.getManuDate().replaceAll("-", ""));
+		for (int i = 0; i < list.size(); i++) {
+			product.setFileName(list.get(i));
+		}
+		product.setFileName(list.get(0));
 		
 		//Business Logic
 		productService.insertProduct(product);
 		// Model 과 View 연결
 		model.addAttribute("product", product);
 		
-		
+		//forward
 		return "forward:/product/addProduct.jsp";
 	}
+		
+		
 	
 	@RequestMapping("/getProduct.do")
 	public String getProduct(@RequestParam("prodNo") String prodNo, Model model) throws Exception{

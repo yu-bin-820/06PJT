@@ -65,7 +65,8 @@
 		    </init-param>
 		    
 		    <load-on-startup>1</load-on-startup>
-  </servlet>
+		    
+		</servlet>
   
     <!-- 확장자가 ~.do 경우 Servlet Mapping ::  -->
 	  <servlet-mapping>

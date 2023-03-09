@@ -20,5 +20,7 @@ public interface PurchaseService {
 	
 	public void updatePurchase(Purchase purchase) throws Exception;
 	
+	public void updateTranCodeByProd(Purchase purchase) throws Exception;
+	
 	public void updateTranCode(Purchase purchase) throws Exception;
 }

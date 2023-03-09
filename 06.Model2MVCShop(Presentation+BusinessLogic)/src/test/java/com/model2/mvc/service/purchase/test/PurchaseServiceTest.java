@@ -99,7 +99,7 @@ public class PurchaseServiceTest {
 		purchase.setTranCode("2");
 		purchase.setPurchaseProd(product);
 		
-		purchaseService.updateTranCode(purchase);
+		purchaseService.updateTranCodeByProd(purchase);
 		
 	}
 	
